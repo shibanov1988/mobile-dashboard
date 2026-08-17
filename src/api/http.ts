@@ -1,0 +1,38 @@
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+
+export async function apiGet<T>(path: string): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`GET ${path} failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+export async function apiPost<T>(
+  path: string,
+  body?: unknown
+): Promise<T> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+
+  if (!response.ok) {
+    throw new Error(`POST ${path} failed: ${response.status}`);
+  }
+
+  return response.json();
+}
